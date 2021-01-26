@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
+import Entry from "./Entry";
 import "./App.css";
-
-const DENOMINATIONS = [1000, 500, 200, 100, 50, 20, 10];
 
 export default function App() {
   const [entries, setEntries] = useState([
@@ -10,9 +9,6 @@ export default function App() {
       count: "",
     },
   ]);
-
-  const [inspectState, setInspectState] = useState(false);
-
   useEffect(() => {
     // get the last entry
     const lastEntry = entries[entries.length - 1];
@@ -29,7 +25,6 @@ export default function App() {
 
   const handleChange = (evt, entryIndex) => {
     const { name, value } = evt.target;
-
     const newEntries = entries.map((entry, idx) => {
       if (idx === entryIndex) {
         return {
@@ -37,10 +32,8 @@ export default function App() {
           [name]: value,
         };
       }
-
       return entry;
     });
-
     setEntries(newEntries);
   };
 
@@ -59,7 +52,6 @@ export default function App() {
       ]);
     }
   };
-
   const deleteEntry = (entryIndex) => {
     setEntries((entries) => entries.filter((_, idx) => idx !== entryIndex));
   };
@@ -67,81 +59,24 @@ export default function App() {
   return (
     <div className="App">
       <h1>Usher Calculator</h1>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <button onClick={() => setInspectState((show) => !show)}>
-          Inspect state
-        </button>
-        <button
-          onClick={clear}
-          style={{
-            background: "red",
-            color: "white",
-            border: "none",
-            fontSize: "18px",
-            padding: "4px 8px",
-          }}
-        >
+      <div className="calc-action">
+        <button onClick={clear} className="clear-btn">
           Clear
         </button>
       </div>
       {entries.map((entry, idx) => (
-        <fieldset key={idx}>
-          <span>
-            <div className="select">
-              <select
-                name="amount"
-                value={entry.amount}
-                onChange={(evt) => handleChange(evt, idx)}
-              >
-                <option value="">select a denomination</option>
-                {DENOMINATIONS.map((amount) => (
-                  <option value={amount} key={amount}>
-                    {amount.toLocaleString()}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </span>
-          &times;
-          <div>
-            <input
-              type="number"
-              name="count"
-              placeholder="enter count"
-              min="1"
-              step="1"
-              value={entry.count}
-              onChange={(evt) => handleChange(evt, idx)}
-            />
-          </div>
-          <div> = {(entry.amount * entry.count).toLocaleString()}</div>
-          {idx !== entries.length - 1 && (
-            <button
-              onClick={() => deleteEntry(idx)}
-              style={{ marginLeft: "10px" }}
-            >
-              &times;
-            </button>
-          )}
-        </fieldset>
+        <Entry
+          key={idx}
+          amount={entry.amount}
+          count={entry.count}
+          onChange={(e) => handleChange(e, idx)}
+          onDelete={() => deleteEntry(idx)}
+          canDelete={idx !== entries.length - 1} // last entry is undeletable
+        />
       ))}
-
-      <div style={{ marginTop: "10px" }}>
-        Total:{" "}
-        <span style={{ fontSize: 22 }}>{computeTotal().toLocaleString()}</span>
+      <div className="total">
+        Total: <span>{computeTotal().toLocaleString()}</span>
       </div>
-
-      {inspectState ? (
-        <div>
-          <pre>{JSON.stringify(entries)}</pre>
-        </div>
-      ) : null}
     </div>
   );
 }

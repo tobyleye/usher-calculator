@@ -5,7 +5,7 @@
   margin: 1rem auto;
 }
 
-fieldset {
+.entry {
   border: 1px solid #ccc;
   margin-bottom: 10px;
   padding: 10px;
@@ -48,4 +48,29 @@ input:focus {
 
 .select select {
   padding-right: 26px;
+}
+
+.total span {
+  font-size: 22px;
+  font-weight: 800;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 5px 0;
+  display: inline-block;
+}
+
+.clear-btn {
+  cursor: pointer;
+  border: none;
+  background: red;
+  color: white;
+  border-radius: 3px;
+  font-size: 18px;
+  padding: 4px 8px;
+}
+
+.calc-action {
+  display: flex;
+  justify-content:flex-end;
+  margin-bottom: 20px;
 }
