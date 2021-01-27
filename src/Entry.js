@@ -33,11 +33,7 @@ export default function Entry({
         />
       </div>
       <div> = {(amount * count).toLocaleString()}</div>
-      {canDelete && (
-        <button onClick={onDelete} style={{ marginLeft: "10px" }}>
-          &times;
-        </button>
-      )}
+      {canDelete && <button onClick={onDelete}>&times;</button>}
     </div>
   );
 }
